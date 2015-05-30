@@ -1,0 +1,1 @@
+Omnisharp-lite
