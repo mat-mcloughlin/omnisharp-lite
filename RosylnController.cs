@@ -62,7 +62,7 @@ namespace OmnisharpLite.Controllers
 
             var symbols = Recommender.GetRecommendedSymbolsAtPosition(model, position, _workspace);
 
-            return symbols.Select(s => s.ToString()).ToList();
+            return symbols.Select(s => s.Name).ToList();
         }
     }
 
