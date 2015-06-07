@@ -1,8 +1,53 @@
 <html>
 <head>
+    <link rel="stylesheet" href="bower_components/codemirror/lib/codemirror.css" charset="utf-8">
 </head>
 <body>
-    <h1>Hello Woop</h1>
+    <h1>Omnisharp Lite</h1>
+    <textarea id="editor" style="width: 300px; heigh:300px; border: 2px grey solid;">
+public class Test
+{
+	public static void Something()
+    {
+    }
+}
+    </textarea>
+    <div>
+        <input type="text" id="renameTextbox" value="">
+        <input type="button" id="renameButton" value="Rename">
+    <script type="text/JavaScript" src="bower_components/codemirror/lib/codemirror.js"></script>
+    <script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+
+    </script>
+    <script>
+    window.onload = function() {
+        var textarea = $('#editor');
+        var renameTextbox = $('#renameTextbox');
+        var renameButton = $('#renameButton');
+
+        var editor = CodeMirror.fromTextArea(textarea[0], {
+            lineNumbers: true
+        });
+
+        renameButton.on('click', function() {
+            var renameTo = renameTextbox.val();
+            var pos = editor.getCursor();
+
+            var request = {
+                renameTo: renameTo,
+                line: pos.line,
+                column: pos.ch,
+                buffer: editor.getValue(),
+            }
+
+            $.post('/api/rosyln/rename', request, function(res) {
+                if (res) {
+                    editor.setValue(res);
+                }
+            });
+        });
+    }
+    </script>
 </body>
 
 </html>
